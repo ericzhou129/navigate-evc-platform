@@ -2,6 +2,20 @@
 
 A [Claude Code](https://claude.com/claude-code) skill that gives AI agents the ability to autonomously navigate and explore the EV Connect Management Console staging environment using browser automation.
 
+## Quick Start
+
+Give this repo URL to Claude Code and ask it to install the skill:
+
+```
+Install the navigate-platform skill from https://github.com/ericzhou129/navigate-evc-platform
+```
+
+Claude Code will:
+1. Copy the skill into your `.claude/skills/navigate-platform/` directory
+2. Prompt you for your staging credentials (email + password)
+3. Create a `.env` file with your credentials
+4. Set up the OpenBrowser-AI MCP server if not already configured
+
 ## What It Does
 
 This skill provides Claude Code agents with complete context for navigating the EV Connect platform:
@@ -18,50 +32,32 @@ This skill provides Claude Code agents with complete context for navigating the 
 
 ## Prerequisites
 
-1. **[OpenBrowser-AI](https://github.com/openbrowser-ai/openbrowser)** MCP server configured in your `.mcp.json`
-2. **Staging credentials** in a `.env` file:
+- **[Claude Code](https://claude.com/claude-code)** installed
+- **[OpenBrowser-AI](https://github.com/openbrowser-ai/openbrowser)** MCP server (`pip install openbrowser-ai`)
+- **Staging credentials** — your `@evconnect.com` account with Management Console access
 
+## What Gets Created
+
+After installation, you'll have:
+
+```
+.claude/skills/navigate-platform/SKILL.md   # The skill definition
+.env                                         # Your staging credentials (gitignored)
+```
+
+The `.env` file contains:
 ```env
 STAGING_URL=https://ops-stage.evconnect.com
-STAGING_EMAIL=your-agent@evconnect.com
-STAGING_PASSWORD=your-password-here
-```
-
-3. **Claude Code** installed and configured
-
-## Installation
-
-Copy the skill into your Claude Code skills directory:
-
-```bash
-# From your project root
-mkdir -p .claude/skills/navigate-platform
-cp path/to/SKILL.md .claude/skills/navigate-platform/SKILL.md
-```
-
-Or clone this repo and copy:
-
-```bash
-git clone https://github.com/ericzhou-evc/navigate-evc-platform.git
-cp -r navigate-evc-platform/.claude/skills/navigate-platform .claude/skills/
+STAGING_EMAIL=your-email@evconnect.com
+STAGING_PASSWORD=your-password
 ```
 
 ## Usage
 
-The skill activates automatically when Claude Code needs to interact with the staging platform. You can also invoke it directly:
-
-```
-/navigate-platform
-```
-
-Or reference it from other skills by telling research agents to read `.claude/skills/navigate-platform/SKILL.md` before using OpenBrowser-AI.
-
-## Updating the `.env` Path
-
-The skill references `path/to/your/.env` in the login flow. Update this to match your actual `.env` file location in your project.
+The skill activates automatically when Claude Code needs to interact with the staging platform. You can also invoke it directly with `/navigate-platform`.
 
 ## Notes
 
-- Zendesk Help Center documentation may be outdated — the skill instructs agents to verify against what they see in the platform
-- Element indices in the React SPA change on every interaction — the skill uses URL-based navigation for reliability
-- Some feature toggles have dependencies and must be enabled in a specific order (network level first, then organization level)
+- Zendesk Help Center docs may be outdated — agents verify against what they actually see in the platform
+- The React SPA uses unstable element indices — the skill navigates by URL for reliability
+- Feature toggles have dependencies: enable at network level first, then organization level
